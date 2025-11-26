@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="style2.css">
+    <script src="https://kit.fontawesome.com/0b37b76d39.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </nav>
+            <img src="media/lushlife.jpg" alt="" class="song-img">
+            <h1>Lush Life</h1>
+            <p>Zara Larsson</p>
+
+            <audio id="song"> 
+                <source src="media/Zara Larsson - Lush Life (Lyrics).mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id ="progress">
+
+            <div class="controls">
+                    <div onclick="prevTrack()"><i class="fa-solid fa-backward" id="prevIcon"></i></div>
+                    <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                    <div onclick="nextTrack()"><i class="fa-solid fa-forward" id="nextIcon"></i></div>
+            </div>
+
+            <div class="playlist-container">
+                <button id="togglePlaylist">Playlist ▾</button>
+                <div id="playlist" class="playlist"></div>
+            </div>
+        </div>
+    </div>
+<script>
+    let progress = document.getElementById("progress");
+let song = document.getElementById("song");
+let ctrlIcon = document.getElementById("ctrlIcon");
+let playlistEl = document.getElementById('playlist');
+let toggleBtn = document.getElementById('togglePlaylist');
+
+// Playlist data: populated from your `media/` folder
+const tracks = [
+    { title: 'Lush Life', artist: 'Zara Larsson', src: 'media/Zara Larsson - Lush Life (Lyrics).mp3', img: 'media/lushlife.jpg' },
+    { title: 'Standing Next to You', artist: '', src: 'media/Standing Next to You.mp3', img: 'media/GOLDEN.png' },
+    { title: 'Do It', artist: '', src: 'media/Do it.mp3', img: 'media/Do It.webp' }
+];
+
+let currentIndex = 0;
+
+function loadTrack(index) {
+    if (index < 0) index = tracks.length - 1;
+    if (index >= tracks.length) index = 0;
+    currentIndex = index;
+    const t = tracks[currentIndex];
+    // update audio source
+    song.src = t.src;
+    song.load();
+    // update UI
+    document.querySelector('.song-img').src = t.img || '';
+    document.querySelector('.music-player h1').textContent = t.title;
+    document.querySelector('.music-player p').textContent = t.artist;
+    // update playlist highlight
+    renderPlaylist();
+}
+
+song.onloadedmetadata = function() {
+    progress.max = song.duration;
+    progress.value = song.currentTime;
+}
+
+function playPause(){
+    if (!song.src) loadTrack(currentIndex);
+    if (!song.paused) {
+        song.pause();
+        ctrlIcon.classList.remove('fa-pause');
+        ctrlIcon.classList.add('fa-play');
+    } else {
+        song.play();
+        ctrlIcon.classList.add('fa-pause');
+        ctrlIcon.classList.remove('fa-play');
+    }
+}
+
+function nextTrack(){
+    loadTrack(currentIndex + 1);
+    song.play();
+    ctrlIcon.classList.add('fa-pause');
+    ctrlIcon.classList.remove('fa-play');
+}
+
+function prevTrack(){
+    loadTrack(currentIndex - 1);
+    song.play();
+    ctrlIcon.classList.add('fa-pause');
+    ctrlIcon.classList.remove('fa-play');
+}
+
+song.ontimeupdate = function() {
+    progress.value = song.currentTime;
+}
+
+song.onended = function() {
+    nextTrack();
+}
+
+progress.onchange = function () {
+    song.currentTime = progress.value;
+}
+
+function renderPlaylist(){
+    playlistEl.innerHTML = '';
+    tracks.forEach((t, i) => {
+        const item = document.createElement('div');
+        item.className = 'playlist-item' + (i === currentIndex ? ' active' : '');
+        item.innerHTML = `<div class="pl-left"><img src="${t.img}" alt=""/></div><div class="pl-right"><strong>${t.title}</strong><div class="artist">${t.artist}</div></div>`;
+        item.onclick = () => { loadTrack(i); song.play(); ctrlIcon.classList.add('fa-pause'); ctrlIcon.classList.remove('fa-play'); };
+        playlistEl.appendChild(item);
+    });
+}
+
+toggleBtn.onclick = function() {
+    playlistEl.classList.toggle('open');
+}
+
+// initial render
+loadTrack(0);
+renderPlaylist();
+
+</script>
+
+</body>
+</html>
