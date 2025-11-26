@@ -22,13 +22,14 @@
     text-align: center;
 }
 
+/*
 nav {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
 }
 
-nav .circle {
+/*nav .circle {
     border-radius: 50%;
     width: 40px;
     height:40px;
@@ -37,13 +38,15 @@ nav .circle {
     color:#f53192;
     box-shadow: 0 5px 10px rgba(255,26,26,0.22);
 }
-
+*/
 .song-img {
     width: 220px;
     border-radius: 50%;
     border: 8px solid #fff;
     box-shadow: 0 10px 60px rgba(255,26,26,0.22);
 }
+
+.song-img { display: block; margin: 12px auto; }
 
 .music-player h1 {
     font-size: 20px;
@@ -116,3 +119,60 @@ nav .circle {
 /* small scrollbar style */
 .playlist::-webkit-scrollbar{ width:8px }
 .playlist::-webkit-scrollbar-thumb{ background:#f53192; border-radius:8px }
+
+/* Ensure the music player doesn't grow beyond the viewport */
+.music-player {
+    background: #ffe0e5;
+    width: 400px;
+    padding:25px 35px;
+    text-align: center;
+    max-height: calc(100vh - 40px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* allow children to shrink properly when using flex and overflow */
+    min-height: 0;
+    align-items: center;
+}
+
+/* Playlist container and scroll behavior */
+.playlist-container {
+    margin-top: 10px;
+    text-align: left;
+}
+
+#togglePlaylist{
+    background: transparent;
+    border: none;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.playlist{
+    /* make playlist a flexible scrollable area inside the player */
+    max-height: 260px;
+    overflow: auto;
+    transition: max-height 0.25s ease;
+    border-radius: 8px;
+    padding-right: 6px;
+    /* allow flexbox parent to constrain this element correctly */
+    min-height: 0;
+}
+
+.playlist.open{ max-height: 420px }
+
+/* If further clipping occurs in some viewports, make playlist a flex child that can shrink */
+.playlist-container { display: flex; flex-direction: column; }
+.playlist { flex: 0 1 auto; }
+
+.playlist-item{
+    display:flex;
+    align-items: center;
+    gap:12px;
+    padding:8px;
+    background: #fff;
+    margin-bottom:8px;
+    cursor: pointer;
+}

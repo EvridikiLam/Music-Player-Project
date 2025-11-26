@@ -10,14 +10,7 @@
 <body>
     <div class="container">
         <div class="music-player">
-            <nav>
-                <div class="circle">
-                    <i class="fa-solid fa-angle-left"></i>
-                </div>
-                <div class="circle">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </nav>
+        
             <img src="media/lushlife.jpg" alt="" class="song-img">
             <h1>Lush Life</h1>
             <p>Zara Larsson</p>
@@ -49,8 +42,10 @@ let toggleBtn = document.getElementById('togglePlaylist');
 // Playlist data: populated from your `media/` folder
 const tracks = [
     { title: 'Lush Life', artist: 'Zara Larsson', src: 'media/Zara Larsson - Lush Life (Lyrics).mp3', img: 'media/lushlife.jpg' },
-    { title: 'Standing Next to You', artist: '', src: 'media/Standing Next to You.mp3', img: 'media/GOLDEN.png' },
-    { title: 'Do It', artist: '', src: 'media/Do it.mp3', img: 'media/Do It.webp' }
+    { title: 'Standing Next to You', artist: 'Jung Kook', src: 'media/Standing Next to You.mp3', img: 'media/GOLDEN.png' },
+    { title: 'Do It', artist: 'Stray Kids', src: 'media/Do it.mp3', img: 'media/Do It.webp' },
+    {title: 'Stuck With You', artist: 'Justin Bieber & Ariana Grande', src: 'media/Stuck With You.mp3', img: 'media/Stuck with You.png' }
+    
 ];
 
 let currentIndex = 0;
